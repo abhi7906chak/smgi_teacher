@@ -117,7 +117,7 @@ class _LoginSingUpPageState extends State<LoginSingUpPage> {
                       ),
                     )),
                   ),
-                ),
+                ), 
                 SizedBox(
                   child: Image.asset("assets/image/0.png"),
                   // height: MediaQuery.of(context).size.height,
