@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smgi_teacher/home_srceen/before_loginorSing/login_page.dart';
+import 'package:smgi_teacher/home_srceen/before_loginorSing/singup_page.dart';
 // import 'package:smgi/pages/login_page.dart';
 // import 'package:smgi/pages/singup_page.dart';
 
@@ -94,8 +95,8 @@ class _LoginSingUpPageState extends State<LoginSingUpPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    // Get.to(() => const SingUpPage(),
-                    //     transition: Transition.leftToRightWithFade);
+                    Get.to(() => const SingUpPage(),
+                        transition: Transition.leftToRightWithFade);
                   },
                   child: Container(
                     height: 40.5,
@@ -117,7 +118,7 @@ class _LoginSingUpPageState extends State<LoginSingUpPage> {
                       ),
                     )),
                   ),
-                ), 
+                ),
                 SizedBox(
                   child: Image.asset("assets/image/0.png"),
                   // height: MediaQuery.of(context).size.height,
