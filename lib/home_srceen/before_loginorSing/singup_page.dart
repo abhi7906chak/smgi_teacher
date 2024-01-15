@@ -31,6 +31,7 @@ class _SingUpPageState extends State<SingUpPage> {
   final emailcon = TextEditingController();
   final auth = FirebaseAuth.instance;
   bool loding = false;
+  String dropVal = "Course";
   String nameError = "";
   String emailError = "";
   String passError = "";
@@ -306,85 +307,56 @@ class _SingUpPageState extends State<SingUpPage> {
                       firebaseError(e);
                     }
                   },
-                  child: Container(
-                    height: 40.5,
-                    width: 119.5,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(21),
-                      // color: Colors.amberAccent,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 40, right: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 40.5,
+                          width: 119.5,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(21),
+                            // color: Colors.amberAccent,
+                          ),
+                          child: const Center(
+                              child: Text(
+                            "Sign up",
+                            style: TextStyle(
+                              fontSize: 23,
+                              fontFamily: "Encode",
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.none,
+                              color: Color(0xFF161697),
+                            ),
+                          )),
+                        ),
+                        DropdownButton(
+                          value: dropVal,
+                          items: const [
+                            DropdownMenuItem(
+                                value: "data", child: Text("data")),
+                            DropdownMenuItem(
+                                value: "Course", child: Text("Course")),
+                            DropdownMenuItem(
+                                value: "data1", child: Text("data1")),
+                            DropdownMenuItem(
+                                value: "data2", child: Text("data2"))
+                          ],
+                          onChanged: (String? value) {
+                            setState(() {
+                              dropVal = value!;
+                            });
+                            print(dropVal);
+                          },
+                        ),
+                      ],
                     ),
-                    child: const Center(
-                        child: Text(
-                      "Sign up",
-                      style: TextStyle(
-                        fontSize: 23,
-                        fontFamily: "Encode",
-                        fontWeight: FontWeight.w500,
-                        decoration: TextDecoration.none,
-                        color: Color(0xFF161697),
-                      ),
-                    )),
                   ),
                 ),
                 const SizedBox(
                   height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 1 / 2 - 120,
-                      color: Colors.black,
-                      height: 1,
-                    ),
-                    const Text(
-                      "Continue with",
-                      style: TextStyle(fontFamily: "Encode"),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 1 / 2 - 120,
-                      color: Colors.black,
-                      height: 1,
-                    )
-                  ],
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(0),
-                      backgroundColor: MaterialStateProperty.all(Colors.white)),
-                  child: SizedBox(
-                      height: 40,
-                      width: 42,
-                      child: SizedBox(
-                          child: Image.asset("assets/image/google.png"))),
-                  onPressed: () async {
-                    show();
-                    // try {
-                    //   GoogleSignInAccount? usercred = await googleIn.signIn();
-
-                    //   GoogleSignInAuthentication? userauth =
-                    //       await usercred?.authentication;
-                    //   AuthCredential cred = GoogleAuthProvider.credential(
-                    //     accessToken: userauth?.accessToken,
-                    //     idToken: userauth?.idToken,
-                    //   );
-                    //   await auth.signInWithCredential(cred).then((value) {
-                    //     snack_bar("Let's Go", "You Get In The App Successfully",
-                    //         context, ContentType.success);
-                    //     // Navigator.pushAndRemoveUntil(
-                    //     //     context,
-                    //     //     MaterialPageRoute(
-                    //     //       builder: (context) => const HomeSrc(),
-                    //     //     ),
-                    //     //     (route) => false);
-                    //   });
-
-                    //   // print(user.user?.displayName);
-                    // } catch (e) {
-                    //   showwarning(e);
-                    // }
-                  },
                 ),
                 Image.asset(
                   "assets/image/2.png",
