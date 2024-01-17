@@ -1,10 +1,12 @@
 // import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smgi_teacher/models/teacher_model.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:smgi/models/student_model.dart';
 // import 'package:smgi/pages/after_loginOrsignUp/Verify%20Email/verify_email.dart';
@@ -26,11 +28,12 @@ class _SingUpPageState extends State<SingUpPage> {
   final passwordcon = TextEditingController();
   final repasswordcon = TextEditingController();
   final namecon = TextEditingController();
-  // final firestore = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
 
   final emailcon = TextEditingController();
   final auth = FirebaseAuth.instance;
   bool loding = false;
+  String pass = "";
   String dropVal = "Course";
   String nameError = "";
   String emailError = "";
@@ -268,29 +271,34 @@ class _SingUpPageState extends State<SingUpPage> {
                         lengthCheckMsg();
                       } else if (passwordcon.text != repasswordcon.text) {
                         matchPassMsg();
+                      } else if (dropVal == "Course") {
+                        course();
                       } else {
                         if (checkEmail()) {
-                          // UserCredential usercred =
-                          //     await auth.createUserWithEmailAndPassword(
-                          //         email: emailcon.text,
-                          //         password: passwordcon.text);
-                          // await usercred.user!
-                          //     .sendEmailVerification()
-                          //     .then((value) async {
-                          // User user = auth.currentUser!;
-                          // final studentData = student(
-
-                          //   name: namecon.text,
-                          //   uid: user.uid,
-                          //   photourl: "",
-                          //   email: emailcon.text,
-                          //   password: passwordcon.text,
-                          // ).toJson();
-                          //   await firestore
-                          //       .collection("student")
-                          //       .doc(user.uid)
-                          //       .set(studentData);
-                          // });
+                          setState(() {
+                            pass = passwordcon.toString();
+                          });
+                          UserCredential usercred =
+                              await auth.createUserWithEmailAndPassword(
+                                  email: emailcon.text,
+                                  password: passwordcon.text);
+                          await usercred.user!
+                              .sendEmailVerification()
+                              .then((value) async {
+                            User user = auth.currentUser!;
+                            final TeacherData = teacher(
+                              Course: dropVal,
+                              name: namecon.text,
+                              uid: user.uid,
+                              photourl: "",
+                              email: emailcon.text,
+                              password: passwordcon.text,
+                            ).toJson();
+                            await firestore
+                                .collection("Teacher")
+                                .doc(user.uid)
+                                .set(TeacherData);
+                          });
 
                           succesMsg();
                           // Get.to(() => const VerifyEmailSrc(),
@@ -336,13 +344,10 @@ class _SingUpPageState extends State<SingUpPage> {
                           value: dropVal,
                           items: const [
                             DropdownMenuItem(
-                                value: "data", child: Text("data")),
-                            DropdownMenuItem(
                                 value: "Course", child: Text("Course")),
-                            DropdownMenuItem(
-                                value: "data1", child: Text("data1")),
-                            DropdownMenuItem(
-                                value: "data2", child: Text("data2"))
+                            DropdownMenuItem(value: "BCA", child: Text("BCA")),
+                            DropdownMenuItem(value: "BBA", child: Text("BBA")),
+                            DropdownMenuItem(value: "B.ED", child: Text("B.ED"))
                           ],
                           onChanged: (String? value) {
                             setState(() {
@@ -414,5 +419,10 @@ class _SingUpPageState extends State<SingUpPage> {
     } else {
       snack_bar("Error!", e.toString(), context, ContentType.failure);
     }
+  }
+
+  void course() {
+    snack_bar("Course Not Slected", "Course Never Being Modify", context,
+        ContentType.warning);
   }
 }
