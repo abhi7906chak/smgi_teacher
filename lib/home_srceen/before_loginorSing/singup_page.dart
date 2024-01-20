@@ -1,4 +1,6 @@
 // import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+// ignore_for_file: non_constant_identifier_names, avoid_print
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +8,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smgi_teacher/home_srceen/before_loginorSing/verify_mail.dart';
 import 'package:smgi_teacher/models/teacher_model.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:smgi/models/student_model.dart';
@@ -301,8 +304,8 @@ class _SingUpPageState extends State<SingUpPage> {
                           });
 
                           succesMsg();
-                          // Get.to(() => const VerifyEmailSrc(),
-                          // transition: Transition.zoom);
+                          Get.to(() => const VerifyEmailSrc(),
+                              transition: Transition.zoom);
                         } else {
                           snack_bar(
                               "Email",

@@ -1,11 +1,15 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names, duplicate_ignore
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// ignore: duplicate_ignore, duplicate_ignore
 class teacher {
   final String name;
   final String uid;
   final String photourl;
   final String email;
   final String password;
+  // ignore: non_constant_identifier_names
   final String Course;
   // final Map<String, int>? datesheet; // Use String keys
   // final DateTime? date;

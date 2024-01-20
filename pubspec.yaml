@@ -22,6 +22,7 @@ dependencies:
                               # other depandeceshttp: http: 
   awesome_snackbar_content: ^0.1.1
   email_validator: ^2.1.17
+  font_awesome_flutter: ^10.6.0
 
 
 

@@ -28,13 +28,13 @@ class _SmgiTeacherState extends State<SmgiTeacher> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: VideoSph(),
+      home: const VideoSph(),
       initialRoute: "login_singUp",
       routes: {
-        "splashSrc": (p0) => VideoSph(),
-        "login_singUp": (p0) => LoginSingUpPage(),
-        "singUp": (p0) => SingUpPage(),
-        "login": (p0) => LoginPageSrc(),
+        "splashSrc": (p0) => const VideoSph(),
+        "login_singUp": (p0) => const LoginSingUpPage(),
+        "singUp": (p0) => const SingUpPage(),
+        "login": (p0) => const LoginPageSrc(),
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smgi_teacher/home_srceen/after_login/home_src.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:smgi/pages/after_loginOrsignUp/home_src.dart';
 // import 'package:smgi/pages/forget_pass/password.dart';
@@ -189,12 +190,12 @@ class _LoginPageSrcState extends State<LoginPageSrc> {
                               .then((value) {
                             snack_bar("Yeah!!", "Let's Rock !!", context,
                                 ContentType.success);
-                            // Navigator.pushAndRemoveUntil(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => const HomeSrc(),
-                            //     ),
-                            //     (route) => false);
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Homesrc(),
+                                ),
+                                (route) => false);
                           });
                         }
                       }
@@ -226,28 +227,28 @@ class _LoginPageSrcState extends State<LoginPageSrc> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 1 / 2 - 120,
-                      color: Colors.black,
-                      height: 1,
-                    ),
-                    const Text(
-                      "Continue with",
-                      style: TextStyle(fontFamily: "Encode"),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 1 / 2 - 120,
-                      color: Colors.black,
-                      height: 1,
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //     Container(
+                //       width: MediaQuery.of(context).size.width * 1 / 2 - 120,
+                //       color: Colors.black,
+                //       height: 1,
+                //     ),
+                //     const Text(
+                //       "Continue with",
+                //       style: TextStyle(fontFamily: "Encode"),
+                //     ),
+                //     Container(
+                //       width: MediaQuery.of(context).size.width * 1 / 2 - 120,
+                //       color: Colors.black,
+                //       height: 1,
+                //     )
+                //   ],
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 // ElevatedButton(
                 //   style: ButtonStyle(
                 //       elevation: MaterialStateProperty.all(0),
