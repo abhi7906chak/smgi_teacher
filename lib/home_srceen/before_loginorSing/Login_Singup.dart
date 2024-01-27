@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:smgi_teacher/home_srceen/before_loginorSing/login_page.dart';
-import 'package:smgi_teacher/home_srceen/before_loginorSing/singup_page.dart';
+import 'package:smgi_teacher/home_srceen/before_loginorSing/log_in/login_page.dart';
+import 'package:smgi_teacher/home_srceen/before_loginorSing/sing_up/singup_page.dart';
 // import 'package:smgi/pages/login_page.dart';
 // import 'package:smgi/pages/singup_page.dart';
 

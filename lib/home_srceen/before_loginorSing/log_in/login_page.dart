@@ -3,7 +3,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:smgi_teacher/home_srceen/after_login/home_src.dart';
+import 'package:smgi_teacher/home_srceen/after_login/Home/home_src.dart';
+import 'package:smgi_teacher/home_srceen/before_loginorSing/log_in/forgot_password/password.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:smgi/pages/after_loginOrsignUp/home_src.dart';
 // import 'package:smgi/pages/forget_pass/password.dart';
@@ -150,7 +151,7 @@ class _LoginPageSrcState extends State<LoginPageSrc> {
                       width: 250,
                       child: TextButton(
                           onPressed: () {
-                            // Get.to(()=> const FpassWord());
+                            Get.to(()=> const FpassWord());
                           },
                           child: const Text(
                             "Forget Password ?",
