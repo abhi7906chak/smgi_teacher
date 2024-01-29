@@ -26,6 +26,7 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   animated_text_kit: ^4.2.2
   image_picker: ^1.0.7
+  firebase_storage: ^11.6.0
 
 
 

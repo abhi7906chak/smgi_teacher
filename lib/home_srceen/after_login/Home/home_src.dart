@@ -159,7 +159,7 @@ class _HomesrcState extends State<Homesrc> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      image == null;
+                                      image = null;
                                     });
                                     print("v");
                                     // image!.delete();
