@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:smgi_teacher/home_srceen/after_login/Home/home_src.dart';
+import 'package:smgi_teacher/home_srceen/after_login/home_src.dart';
 import 'package:smgi_teacher/home_srceen/before_loginorSing/Login_Singup.dart';
 import 'package:smgi_teacher/home_srceen/before_loginorSing/log_in/login_page.dart';
 import 'package:smgi_teacher/home_srceen/before_loginorSing/sing_up/singup_page.dart';

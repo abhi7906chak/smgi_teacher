@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 // import 'package:smgi/pages/after_loginOrsignUp/home_src.dart';
 // import 'package:smgi/utiles/snack_bar.dart';
-import 'package:smgi_teacher/home_srceen/after_login/Home/home_src.dart';
+import 'package:smgi_teacher/home_srceen/after_login/home_src.dart';
 import 'package:smgi_teacher/utils/snack_bar/snack_bar.dart';
 import 'package:video_player/video_player.dart';
 
