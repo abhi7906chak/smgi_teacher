@@ -1,12 +1,17 @@
 import 'dart:io';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smgi_teacher/models/post_model.dart';
 import 'package:smgi_teacher/utils/Home_core/get_data.dart';
+import 'package:smgi_teacher/utils/notificatios.dart';
+import 'package:smgi_teacher/utils/snack_bar/snack_bar.dart';
+import 'package:uuid/uuid.dart';
 
 class Homesrc extends StatefulWidget {
   const Homesrc({super.key});
@@ -19,16 +24,21 @@ class _HomesrcState extends State<Homesrc> {
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
   final ImagePicker picker = ImagePicker();
+  final notiTitle = TextEditingController();
   // final RxString image = "".obs;
   File? image;
-  String networkImage =
-      "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.hindustantimes.com%2Frf%2Fimage_size_800x600%2FHT%2Fp2%2F2016%2F02%2F12%2FPictures%2F_e7c37f90-d131-11e5-94bd-a06a76346e8f.jpg&tbnid=QPbeEqwXXb9uTM&vet=12ahUKEwicuv7ZxKCEAxUabGwGHRASA9EQMygEegQIARB4..i&imgrefurl=https%3A%2F%2Fwww.hindustantimes.com%2Fmovie-reviews%2Fdeadpool-review-like-ryan-reynolds-this-movie-is-a-gift-from-god%2Fstory-p1cME8PuYmK8SN7d7zfI4H.html&docid=TDyJjL0fdyIOjM&w=800&h=600&q=deadpool&ved=2ahUKEwicuv7ZxKCEAxUabGwGHRASA9EQMygEegQIARB4";
+  // String networkImage =
+  //     "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.hindustantimes.com%2Frf%2Fimage_size_800x600%2FHT%2Fp2%2F2016%2F02%2F12%2FPictures%2F_e7c37f90-d131-11e5-94bd-a06a76346e8f.jpg&tbnid=QPbeEqwXXb9uTM&vet=12ahUKEwicuv7ZxKCEAxUabGwGHRASA9EQMygEegQIARB4..i&imgrefurl=https%3A%2F%2Fwww.hindustantimes.com%2Fmovie-reviews%2Fdeadpool-review-like-ryan-reynolds-this-movie-is-a-gift-from-god%2Fstory-p1cME8PuYmK8SN7d7zfI4H.html&docid=TDyJjL0fdyIOjM&w=800&h=600&q=deadpool&ved=2ahUKEwicuv7ZxKCEAxUabGwGHRASA9EQMygEegQIARB4";
   var teacherdata = {};
   List name = ["Atendence", "data"];
   bool loding = false;
+  notifications notification = notifications();
   @override
   void initState() {
     super.initState();
+    notification.getPermistion();
+    notification.isTokenRefreash();
+    notification.getToken().then((value) => print("token     " + value));
     getData();
   }
 
@@ -101,7 +111,7 @@ class _HomesrcState extends State<Homesrc> {
                         Padding(
                           padding: const EdgeInsets.only(left: 3.0),
                           child: Text(
-                            teacherdata["name"] ?? "Professor",
+                            "Prof.  " + teacherdata["name"],
                             style: const TextStyle(
                                 fontFamily: "Encode",
                                 fontWeight: FontWeight.w400,
@@ -124,6 +134,7 @@ class _HomesrcState extends State<Homesrc> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextFormField(
+                            controller: notiTitle,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                   borderSide: BorderSide.none),
@@ -167,7 +178,7 @@ class _HomesrcState extends State<Homesrc> {
                                         setState(() {
                                           image = null;
                                         });
-                                        print("v");
+                                        print("Image remove done !!");
                                         // image!.delete();
                                       },
                                     ),
@@ -219,8 +230,31 @@ class _HomesrcState extends State<Homesrc> {
                                                   await UlpoadImage()
                                                           .uploadImages(image!)
                                                       as String;
-                                              setState(() {
-                                                networkImage = imageUrl;
+                                              String uid = Uuid().v1();
+
+                                              var Post = post(
+                                                  like: 1,
+                                                  title: notiTitle.text,
+                                                  uid: auth.currentUser!.uid,
+                                                  postId: uid,
+                                                  date: DateTime.now(),
+                                                  photoUrl: imageUrl);
+                                              firestore
+                                                  .collection("Teacher")
+                                                  .doc(auth.currentUser!.uid)
+                                                  .collection("Post")
+                                                  .doc(uid)
+                                                  .set(Post.tojson())
+                                                  .then((value) {
+                                                setState(() {
+                                                  notiTitle.text = "";
+                                                  image = null;
+                                                });
+                                                snack_bar(
+                                                    "Posted",
+                                                    "Posing succsesfull",
+                                                    context,
+                                                    ContentType.success);
                                               });
                                             } catch (e) {
                                               print(e.toString());
@@ -343,7 +377,7 @@ class _HomesrcState extends State<Homesrc> {
                     ),
                   ),
                   // Image.file(image!)
-                  Image.network(networkImage)
+                  // Image.network(networkImage)
                   // Image.file(File.fromUri(image.value))
                   // Text(image.value)
                 ]),

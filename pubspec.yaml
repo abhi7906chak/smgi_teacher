@@ -16,6 +16,7 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
   firebase_storage: ^11.6.5
+  firebase_messaging: ^14.7.15
                               # VideoSplash related dependences 
   video_player: ^2.8.2
                               # Getx 
@@ -28,6 +29,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   image_picker: ^1.0.7
   uuid: ^4.3.3
+  # emoji_picker_flutter: ^2.0.0
 
 
 
