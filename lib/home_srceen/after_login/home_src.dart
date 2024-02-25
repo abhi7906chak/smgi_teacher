@@ -25,19 +25,23 @@ class _HomesrcState extends State<Homesrc> {
   final firestore = FirebaseFirestore.instance;
   final ImagePicker picker = ImagePicker();
   final notiTitle = TextEditingController();
-  // final RxString image = "".obs;
   File? image;
-  // String networkImage =
-  //     "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.hindustantimes.com%2Frf%2Fimage_size_800x600%2FHT%2Fp2%2F2016%2F02%2F12%2FPictures%2F_e7c37f90-d131-11e5-94bd-a06a76346e8f.jpg&tbnid=QPbeEqwXXb9uTM&vet=12ahUKEwicuv7ZxKCEAxUabGwGHRASA9EQMygEegQIARB4..i&imgrefurl=https%3A%2F%2Fwww.hindustantimes.com%2Fmovie-reviews%2Fdeadpool-review-like-ryan-reynolds-this-movie-is-a-gift-from-god%2Fstory-p1cME8PuYmK8SN7d7zfI4H.html&docid=TDyJjL0fdyIOjM&w=800&h=600&q=deadpool&ved=2ahUKEwicuv7ZxKCEAxUabGwGHRASA9EQMygEegQIARB4";
   var teacherdata = {};
   List name = ["Atendence", "data"];
   bool loding = false;
-  notifications notification = notifications();
+  Notifications notification = Notifications();
   @override
   void initState() {
     super.initState();
-    notification.getPermistion();
-    notification.isTokenRefreash();
+    try {
+      Notifications().getPermistion();
+      Notifications().isTokenRefreash();
+      // Notifications().initLocalnotifiacton(context, );
+      Notifications().friebaseinit();
+    } catch (e) {
+      print(e.toString());
+    }
+
     notification.getToken().then((value) => print("token     " + value));
     getData();
   }
@@ -70,7 +74,7 @@ class _HomesrcState extends State<Homesrc> {
         });
       }
     } catch (e) {
-      // print(e);
+      print(e.toString());
     }
     setState(() {
       loding = false;

@@ -17,6 +17,7 @@ dependencies:
   firebase_auth: ^4.16.0
   firebase_storage: ^11.6.5
   firebase_messaging: ^14.7.15
+  flutter_local_notifications: ^16.3.2
                               # VideoSplash related dependences 
   video_player: ^2.8.2
                               # Getx 
