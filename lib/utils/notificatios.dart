@@ -1,9 +1,11 @@
-// ignore_for_file: avoid_print
-
 import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:smgi_teacher/utils/Home_core/emoji.dart';
 
 class Notifications {
   FirebaseMessaging massage = FirebaseMessaging.instance;
@@ -19,25 +21,34 @@ class Notifications {
         provisional: true,
         sound: true);
     if (setting.authorizationStatus == AuthorizationStatus.authorized) {
-      print("okay");
+      if (kDebugMode) {
+        print("okay");
+      }
     } else if (setting.authorizationStatus == AuthorizationStatus.provisional) {
-      print("for i phone");
+      if (kDebugMode) {
+        print("for i phone");
+      }
     } else {
-      print("not granted");
+      if (kDebugMode) {
+        print("not granted");
+      }
     }
   }
 
-  Future<void> initLocalnotifiacton(RemoteMessage message) async {
+  Future<void> initLocalnotifiacton(
+      BuildContext context, RemoteMessage message) async {
     var androidSetting =
         const AndroidInitializationSettings("@mipmap/ic_launcher");
 
     ///same for ios
     var initSetting = InitializationSettings(
-      android: androidSetting, 
+      android: androidSetting,
     );
     await flutterLocalNotificationsPlugin.initialize(
       initSetting,
-      onDidReceiveNotificationResponse: (payload) {},
+      onDidReceiveNotificationResponse: (payload) {
+        handleMsg(context, message);
+      },
     );
     AndroidNotificationChannel androidNotificationChannel =
         AndroidNotificationChannel(
@@ -69,18 +80,40 @@ class Notifications {
     );
   }
 
-  void friebaseinit() {
+  void handleMsg(BuildContext context, RemoteMessage message) {
+    /// Add all the key you want be sure same as database;
+    if (message.data["id"] == "id1") {
+      Get.to(() => Messges(
+            id: message.data["id"].toString(),
+          ));
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => Messges(id: message.data["id1"].toString()),
+      //     ));
+    } else {
+      if (kDebugMode) {
+        print("key not match");
+      }
+    }
+  }
+
+  void friebaseinit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((event) {
       if (event.notification != null) {
-        print(event.notification!.title.toString());
-        print(event.notification!.body.toString());
+        if (kDebugMode) {
+          print(event.notification!.title.toString());
+          print(event.notification!.body.toString());
+          print(event.data["id1"]);
+          print(event.data["id2"]);
+        }
         // shownoti(event);
-        initLocalnotifiacton(event);
+        initLocalnotifiacton(context, event);
       }
     });
   }
 
-  Future<void> shownoti(RemoteMessage message) async {}
+  // Future<void> shownoti(RemoteMessage message) async {}
 
   Future<String> getToken() async {
     String? token = await massage.getToken();

@@ -8,7 +8,7 @@ import 'package:smgi_teacher/home_srceen/before_loginorSing/log_in/login_page.da
 import 'package:smgi_teacher/home_srceen/before_loginorSing/sing_up/singup_page.dart';
 import 'package:smgi_teacher/utils/splash_src/splash.dart';
 
-import 'firebase_options.dart';
+import 'utils/firebase_option/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

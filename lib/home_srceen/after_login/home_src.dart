@@ -1,17 +1,14 @@
 import 'dart:io';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import "package:flutter/foundation.dart";
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smgi_teacher/models/post_model.dart';
-import 'package:smgi_teacher/utils/Home_core/get_data.dart';
+import 'package:smgi_teacher/home_srceen/after_login/Home/home_src_core.dart/post_botton.dart';
 import 'package:smgi_teacher/utils/notificatios.dart';
-import 'package:smgi_teacher/utils/snack_bar/snack_bar.dart';
-import 'package:uuid/uuid.dart';
 
 class Homesrc extends StatefulWidget {
   const Homesrc({super.key});
@@ -23,11 +20,14 @@ class Homesrc extends StatefulWidget {
 class _HomesrcState extends State<Homesrc> {
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
-  final ImagePicker picker = ImagePicker();
   final notiTitle = TextEditingController();
+
+  final ImagePicker picker = ImagePicker();
+  final String textfiledErrormsg = "";
   File? image;
+
   var teacherdata = {};
-  List name = ["Atendence", "data"];
+  List name = ["Atendence", "Request"];
   bool loding = false;
   Notifications notification = Notifications();
   @override
@@ -37,12 +37,18 @@ class _HomesrcState extends State<Homesrc> {
       Notifications().getPermistion();
       Notifications().isTokenRefreash();
       // Notifications().initLocalnotifiacton(context, );
-      Notifications().friebaseinit();
+      Notifications().friebaseinit(context);
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
 
-    notification.getToken().then((value) => print("token     " + value));
+    notification.getToken().then((value) {
+      if (kDebugMode) {
+        print("token     $value");
+      }
+    });
     getData();
   }
 
@@ -54,7 +60,9 @@ class _HomesrcState extends State<Homesrc> {
         // print(image.value);
         image = File(pickedFile.path);
       } else {
-        print("user exit the program");
+        if (kDebugMode) {
+          print("user exit the program");
+        }
       }
     });
   }
@@ -74,7 +82,9 @@ class _HomesrcState extends State<Homesrc> {
         });
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
     setState(() {
       loding = false;
@@ -102,19 +112,31 @@ class _HomesrcState extends State<Homesrc> {
                             repeatForever: true,
                             isRepeatingAnimation: true,
                             animatedTexts: [
-                              TypewriterAnimatedText("Hello",
+                              TypewriterAnimatedText(
+                                "Hello",
+                                textStyle: const TextStyle(
+                                    fontFamily: "Namaste",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                                speed: const Duration(milliseconds: 300),
+                              ),
+                              TypewriterAnimatedText("Hey",
                                   textStyle: const TextStyle(
                                       fontFamily: "Encode",
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 15),
                                   speed: const Duration(milliseconds: 300)),
-                              TypewriterAnimatedText("hello2",
+                              TypewriterAnimatedText("Hi",
+                                  textStyle: const TextStyle(
+                                      fontFamily: "Encode",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
                                   speed: const Duration(milliseconds: 300)),
-                              TypewriterAnimatedText("hello2")
                             ]),
                         Padding(
                           padding: const EdgeInsets.only(left: 3.0),
                           child: Text(
+                            // ignore: prefer_interpolation_to_compose_strings
                             "Prof.  " + teacherdata["name"],
                             style: const TextStyle(
                                 fontFamily: "Encode",
@@ -139,11 +161,14 @@ class _HomesrcState extends State<Homesrc> {
                         children: [
                           TextFormField(
                             controller: notiTitle,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
+                            decoration: InputDecoration(
+                              errorText: textfiledErrormsg.isNotEmpty
+                                  ? textfiledErrormsg
+                                  : null,
+                              border: const OutlineInputBorder(
                                   borderSide: BorderSide.none),
                               hintText: "Any Notification....?",
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                   color: Colors.black54,
                                   fontFamily: "Encode",
                                   fontWeight: FontWeight.w400,
@@ -157,7 +182,7 @@ class _HomesrcState extends State<Homesrc> {
                               : Stack(
                                   alignment: Alignment.topRight,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       height: 70,
                                       width: 370,
                                       // color: Colors.amber,
@@ -166,10 +191,7 @@ class _HomesrcState extends State<Homesrc> {
                                             ? const Text("data")
                                             : Image.file(
                                                 image!,
-                                                // height: 200,
-                                                // width: 200,
                                                 fit: BoxFit.fitWidth,
-                                                // color: Colors.amber,
                                               ),
                                       ),
                                     ),
@@ -182,7 +204,9 @@ class _HomesrcState extends State<Homesrc> {
                                         setState(() {
                                           image = null;
                                         });
-                                        print("Image remove done !!");
+                                        if (kDebugMode) {
+                                          print("Image remove done !!");
+                                        }
                                         // image!.delete();
                                       },
                                     ),
@@ -225,47 +249,16 @@ class _HomesrcState extends State<Homesrc> {
                                     children: [
                                       InkWell(
                                         onTap: () async {
-                                          print("pressed");
-                                          if (image != null) {
-                                            try {
-                                              // UlpoadImage()
-                                              //     .uploadImages(image!);
-                                              String imageUrl =
-                                                  await UlpoadImage()
-                                                          .uploadImages(image!)
-                                                      as String;
-                                              String uid = Uuid().v1();
-
-                                              var Post = post(
-                                                  like: 1,
-                                                  title: notiTitle.text,
-                                                  uid: auth.currentUser!.uid,
-                                                  postId: uid,
-                                                  date: DateTime.now(),
-                                                  photoUrl: imageUrl);
-                                              firestore
-                                                  .collection("Teacher")
-                                                  .doc(auth.currentUser!.uid)
-                                                  .collection("Post")
-                                                  .doc(uid)
-                                                  .set(Post.tojson())
-                                                  .then((value) {
-                                                setState(() {
-                                                  notiTitle.text = "";
-                                                  image = null;
-                                                });
-                                                snack_bar(
-                                                    "Posted",
-                                                    "Posing succsesfull",
-                                                    context,
-                                                    ContentType.success);
-                                              });
-                                            } catch (e) {
-                                              print(e.toString());
-                                            }
-                                          } else {
-                                            print("image is null");
-                                          }
+                                          PostBotton()
+                                              .postbutton(
+                                                  context, notiTitle, image)
+                                              .then((value) {
+                                            setState(() {
+                                              notiTitle.text = "";
+                                              image = null;
+                                              // }
+                                            });
+                                          });
                                         },
                                         child: Container(
                                             height: 40,

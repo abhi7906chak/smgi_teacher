@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// ignore: camel_case_types
 class post {
   final String title;
   final String uid;
   final String postId;
+  // ignore: prefer_typing_uninitialized_variables
   final like;
   final DateTime date;
   final String photoUrl;
