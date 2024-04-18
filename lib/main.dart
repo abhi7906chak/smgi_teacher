@@ -38,7 +38,7 @@ class _SmgiTeacherState extends State<SmgiTeacher> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: const VideoSph(),
-      initialRoute: "home",
+      initialRoute: "singup",
       routes: {
         "splashSrc": (p0) => const VideoSph(),
         "login_singUp": (p0) => const LoginSingUpPage(),

@@ -40,7 +40,7 @@ class PostBotton {
       if (title.isNotEmpty || imageUrl!.isNotEmpty) {
         await firestore
             .collection("Teacher")
-            .doc(auth.currentUser!.uid)
+            .doc(auth.currentUser!.email.toString())
             .collection("Post")
             .doc(uid)
             .set(Post.tojson())
@@ -59,6 +59,4 @@ class PostBotton {
       snack_bar("Error", e.toString(), context, ContentType.failure);
     }
   }
-
-  
 }

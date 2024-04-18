@@ -22,10 +22,10 @@ class SingUpPage extends StatefulWidget {
   const SingUpPage({super.key});
 
   @override
-  State<SingUpPage> createState() => _SingUpPageState();
+  State<SingUpPage> createState() => SingUpPageState();
 }
 
-class _SingUpPageState extends State<SingUpPage> {
+class SingUpPageState extends State<SingUpPage> {
   // final googleIn = GoogleSignIn();
   final _formkey = GlobalKey<FormState>();
   final passwordcon = TextEditingController();
@@ -299,7 +299,7 @@ class _SingUpPageState extends State<SingUpPage> {
                             ).toJson();
                             await firestore
                                 .collection("Teacher")
-                                .doc(user.uid)
+                                .doc(auth.currentUser!.email.toString())
                                 .set(TeacherData);
                           });
 

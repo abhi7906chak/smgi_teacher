@@ -1,5 +1,5 @@
 /*
-In this code Splash Screen for this app only video format is done
+for this app only in video fromated splash is done
 vcon - is the video player Controller
 play()- is for play the controller 
 */

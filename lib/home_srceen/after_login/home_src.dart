@@ -6,7 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/foundation.dart";
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smgi_teacher/attendence/attendence.dart';
 import 'package:smgi_teacher/home_srceen/after_login/Home/home_src_core.dart/post_botton.dart';
 import 'package:smgi_teacher/utils/notificatios.dart';
 
@@ -74,7 +76,7 @@ class _HomesrcState extends State<Homesrc> {
     try {
       var teacherData = await firestore
           .collection("Teacher")
-          .doc(auth.currentUser!.uid)
+          .doc(auth.currentUser!.email.toString())
           .get();
       if (teacherData.exists) {
         setState(() {
@@ -295,40 +297,84 @@ class _HomesrcState extends State<Homesrc> {
                   const SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
-                    // color: Colors.green,
-                    height: 200,
-                    width: 100,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(10),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 10,
-                        crossAxisCount: 2,
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const SizedBox(
+                        width: 10,
                       ),
-                      itemCount: 2,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(
+                              () => const TempAtten(),
+                              transition: Transition.downToUp,
+                            );
+                          },
+                          child: Container(
+                            height: 200,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10, left: 10),
+                                  child: Text(
+                                    "object",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        // color: Colors.white,
+                                        fontFamily: "Encode"),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 10, bottom: 10),
+                                  child: Text(
+                                    "Atendece ..?",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        // color: Colors.white,
+                                        fontFamily: "Encode"),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 200,
+                          // width: 100,
                           decoration: BoxDecoration(
                               color: Colors.amber,
                               borderRadius: BorderRadius.circular(15)),
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10, left: 10),
+                                padding: EdgeInsets.only(top: 10, left: 10),
                                 child: Text(
-                                  name[index],
-                                  style: const TextStyle(
+                                  "object",
+                                  style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w400,
                                       // color: Colors.white,
                                       fontFamily: "Encode"),
                                 ),
                               ),
-                              const Padding(
+                              Padding(
                                 padding: EdgeInsets.only(left: 10, bottom: 10),
                                 child: Text(
                                   "Atendece ..?",
@@ -341,9 +387,12 @@ class _HomesrcState extends State<Homesrc> {
                               )
                             ],
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                    ],
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
