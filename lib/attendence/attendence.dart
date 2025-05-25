@@ -1,3 +1,4 @@
+// attendence/attendence.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -22,17 +23,27 @@ class TempAttenState extends State<TempAtten> {
   DateTime? picked;
 
   slecttime() async {
+    DateTime firstDate = DateTime(year.year, 1, 1);
+    DateTime lastDate = DateTime(year.year, 4, 30);
+
+    // Make sure initialDate is within the valid range
+    DateTime initialDate = slecteddate;
+    if (initialDate.isBefore(firstDate)) {
+      initialDate = firstDate;
+    } else if (initialDate.isAfter(lastDate)) {
+      initialDate = lastDate;
+    }
+
     picked = await showDatePicker(
       context: context,
-      initialDate: slecteddate,
-      firstDate: DateTime(year.year, 1, 1),
-      lastDate: DateTime(year.year, 4, 31),
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
+
     if (picked != null) {
-      // Handle the picked date
       setState(() {
         slecteddate = picked!;
-        // Update the state with the picked date if needed
       });
       debugPrint('$picked');
     }
@@ -45,13 +56,17 @@ class TempAttenState extends State<TempAtten> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              // ignore: prefer_interpolation_to_compose_strings
-              "Attendence",
-              style: const TextStyle(
-                  fontFamily: "Encode",
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20),
+            title: const Row(
+              children: [
+                Text(
+                  // ignore: prefer_interpolation_to_compose_strings
+                  "Attendence",
+                  style: TextStyle(
+                      fontFamily: "Encode",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20),
+                ),
+              ],
             ),
             automaticallyImplyLeading: false,
           ),
@@ -74,7 +89,7 @@ class TempAttenState extends State<TempAtten> {
                   Text(formater.format(picked ?? DateTime.now()))
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SizedBox(
@@ -97,7 +112,7 @@ class TempAttenState extends State<TempAtten> {
                         var studentId = snapshot.data!.docs[index].data();
                         return Card(
                           child: ListTile(
-                            leading: CircleAvatar(),
+                            leading: const CircleAvatar(),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

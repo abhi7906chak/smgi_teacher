@@ -1,3 +1,4 @@
+// models/teacher_model.dart
 // ignore_for_file: camel_case_types, non_constant_identifier_names, duplicate_ignore
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,20 +10,21 @@ class teacher {
   final String photourl;
   final String email;
   final String password;
-  // ignore: non_constant_identifier_names
+  final bool update;
   final String Course;
-  // final Map<String, int>? datesheet; // Use String keys
-  // final DateTime? date;
+  final String timetable; // ✅ new field
+  final List<String> subjects; // ✅ new field
 
   teacher({
-    // this.date,
-    // this.datesheet,
+    required this.update,
     required this.Course,
     required this.password,
     required this.name,
     required this.uid,
     required this.photourl,
     required this.email,
+    required this.timetable,
+    required this.subjects,
   });
 
   static teacher fromSnap(DocumentSnapshot snap) {
@@ -30,22 +32,26 @@ class teacher {
 
     return teacher(
       Course: snapshot["Course"],
-      // datesheet: snapshot['datesheet'],
+      update: snapshot["update"],
       name: snapshot["name"],
       uid: snapshot["uid"],
       email: snapshot["email"],
       password: snapshot['password1'],
       photourl: snapshot['photourl'],
+      timetable: snapshot["timetable"] ?? "",
+      subjects: List<String>.from(snapshot["subjects"] ?? []),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        // "datesheet": datesheet,
         "name": name,
         "uid": uid,
         "email": email,
         "photourl": photourl,
         "Course": Course,
-        "password1": password
+        "password1": password,
+        "update": update,
+        "timetable": timetable,
+        "subjects": subjects,
       };
 }

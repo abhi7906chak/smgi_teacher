@@ -1,3 +1,4 @@
+// home_srceen/before_loginorSing/sing_up/singup_page.dart
 // import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 // ignore_for_file: non_constant_identifier_names, avoid_print
 
@@ -296,6 +297,9 @@ class SingUpPageState extends State<SingUpPage> {
                               photourl: "",
                               email: emailcon.text,
                               password: passwordcon.text,
+                              update: false,
+                              timetable: "",
+                              subjects: [],
                             ).toJson();
                             await firestore
                                 .collection("Teacher")

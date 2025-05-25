@@ -1,3 +1,4 @@
+// main.dart
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _SmgiTeacherState extends State<SmgiTeacher> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: const VideoSph(),
-      initialRoute: "singup",
+      initialRoute: "splashSrc",
       routes: {
         "splashSrc": (p0) => const VideoSph(),
         "login_singUp": (p0) => const LoginSingUpPage(),

@@ -1,3 +1,4 @@
+// home_srceen/after_login/home_src.dart
 import 'dart:io';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -10,7 +11,13 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smgi_teacher/attendence/attendence.dart';
 import 'package:smgi_teacher/home_srceen/after_login/Home/home_src_core.dart/post_botton.dart';
+import 'package:smgi_teacher/utils/Home_core/teacher_profile_edit.dart';
+import 'package:smgi_teacher/utils/account_validate_src.dart';
+import 'package:smgi_teacher/utils/image_time_table.dart';
 import 'package:smgi_teacher/utils/notificatios.dart';
+import 'package:smgi_teacher/utils/social_links.dart';
+import 'package:smgi_teacher/utils/students_show.dart';
+import 'package:smgi_teacher/utils/subject.dart';
 
 class Homesrc extends StatefulWidget {
   const Homesrc({super.key});
@@ -222,11 +229,11 @@ class _HomesrcState extends State<Homesrc> {
                               children: [
                                 Row(
                                   children: [
-                                    IconButton(
-                                      icon: const FaIcon(
-                                          FontAwesomeIcons.faceSmile),
-                                      onPressed: () {},
-                                    ),
+                                    // IconButton(
+                                    //   icon: const FaIcon(
+                                    //       FontAwesomeIcons.faceSmile),
+                                    //   onPressed: () {},
+                                    // ),
                                     IconButton(
                                       icon:
                                           const FaIcon(FontAwesomeIcons.image),
@@ -315,7 +322,13 @@ class _HomesrcState extends State<Homesrc> {
                             height: 200,
                             width: 100,
                             decoration: BoxDecoration(
-                                color: Colors.amber,
+                                gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    colors: [
+                                      Color(0xFF161697),
+                                      Color(0xFF9747FF),
+                                    ]),
+                                // color: Colors.,
                                 borderRadius: BorderRadius.circular(15)),
                             child: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,11 +337,11 @@ class _HomesrcState extends State<Homesrc> {
                                 Padding(
                                   padding: EdgeInsets.only(top: 10, left: 10),
                                   child: Text(
-                                    "object",
+                                    "Today",
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400,
-                                        // color: Colors.white,
+                                        color: Colors.white,
                                         fontFamily: "Encode"),
                                   ),
                                 ),
@@ -340,7 +353,7 @@ class _HomesrcState extends State<Homesrc> {
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
-                                        // color: Colors.white,
+                                        color: Colors.white,
                                         fontFamily: "Encode"),
                                   ),
                                 )
@@ -353,39 +366,53 @@ class _HomesrcState extends State<Homesrc> {
                         width: 10,
                       ),
                       Expanded(
-                        child: Container(
-                          height: 200,
-                          // width: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 10, left: 10),
-                                child: Text(
-                                  "object",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                      // color: Colors.white,
-                                      fontFamily: "Encode"),
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(
+                              () => TeacherProfileForm(),
+                              transition: Transition.downToUp,
+                            );
+                          },
+                          child: Container(
+                            height: 200,
+                            // width: 100,
+                            decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    colors: [
+                                      Color(0xFF161697),
+                                      Color(0xFF9747FF),
+                                    ]),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10, left: 10),
+                                  child: Text(
+                                    "Profile",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                        fontFamily: "Encode"),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 10, bottom: 10),
-                                child: Text(
-                                  "Atendece ..?",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      // color: Colors.white,
-                                      fontFamily: "Encode"),
-                                ),
-                              )
-                            ],
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 10, bottom: 10),
+                                  child: Text(
+                                    "Edit profile...?",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                        fontFamily: "Encode"),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -400,23 +427,71 @@ class _HomesrcState extends State<Homesrc> {
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         children: [
-                          Container(
-                            height: 150,
-                            width: 150,
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(115, 30, 234, 238),
-                                borderRadius: BorderRadius.circular(15)),
+                          InkWell(
+                            onTap: () {
+                              String mail = auth.currentUser!.email.toString();
+                              Get.to(
+                                  () => TeacherSubjectManager(teacherId: mail),
+                                  transition: Transition.downToUp);
+                            },
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(115, 30, 234, 238),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: const Center(
+                                  child: Text(
+                                "Subjects",
+                                style: TextStyle(fontSize: 25),
+                              )),
+                            ),
                           ),
                           const SizedBox(
                             width: 10,
                           ),
-                          Container(
-                            height: 150,
-                            width: 150,
-                            color: const Color.fromARGB(195, 151, 71, 255),
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => const StudentListScreen(),
+                                  transition: Transition.downToUp);
+                            },
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  // color: const Color.fromARGB(115, 30, 234, 238),
+                                  color:
+                                      const Color.fromARGB(195, 151, 71, 255),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: const Center(
+                                  child: Text(
+                                "Sutdents",
+                                style: TextStyle(fontSize: 25),
+                              )),
+                            ),
                           ),
                           const SizedBox(
                             width: 10,
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              Get.to(() => const ImagePickerWidget(),
+                                  transition: Transition.downToUp);
+                            },
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(115, 30, 234, 238),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: const Center(
+                                  child: Text(
+                                "Time Table",
+                                style: TextStyle(fontSize: 25),
+                              )),
+                            ),
                           ),
                         ],
                       ),
@@ -426,6 +501,109 @@ class _HomesrcState extends State<Homesrc> {
                   // Image.network(networkImage)
                   // Image.file(File.fromUri(image.value))
                   // Text(image.value)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(() => const StudentApprovalScreen(),
+                            transition: Transition.downToUp);
+                      },
+                      child: Container(
+                        height: 100,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.purple.shade100,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: const Center(
+                            child: Text(
+                          "Student Request\n For validating their profile",
+                          style: TextStyle(
+                              height: 2,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Encode"),
+                          textAlign: TextAlign.center,
+                        )),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.deepPurple.shade50,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                            color: Colors.deepPurple.shade200, width: 1.5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.deepPurple.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        "New features coming soon to enhance your experience!",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.deepPurple.shade700,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(
+                          () => const SocialLinksScreen(
+                            facebookUrl:
+                                "https://www.facebook.com/profile.php?id=100022992082245",
+                            instagramUrl:
+                                "https://www.instagram.com/abhishek_khatik_214/",
+                            githubUrl: "https://github.com/abhi7906chak",
+                            linkedinUrl:
+                                "https://www.linkedin.com/in/abhishek-kumar-chak/",
+                          ),
+                          transition: Transition.downToUp,
+                        );
+                      },
+                      child: Container(
+                        // margin: const EdgeInsets.only(top: 5),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple.shade50,
+                          borderRadius: BorderRadius.circular(16),
+                          border:
+                              Border.all(color: Colors.deepPurple, width: 1.2),
+                        ),
+                        child: Center(
+                          child: RichText(
+                            text: const TextSpan(
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.deepPurple,
+                              ),
+                              children: [
+                                TextSpan(text: 'Made with '),
+                                WidgetSpan(
+                                  child: Icon(Icons.favorite,
+                                      color: Colors.red, size: 16),
+                                ),
+                                TextSpan(text: ' by Abhishek Chak • BCA \'25'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ]),
               )),
             ),
