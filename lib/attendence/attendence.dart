@@ -1,7 +1,6 @@
 // attendence/attendence.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -24,7 +23,7 @@ class TempAttenState extends State<TempAtten> {
 
   slecttime() async {
     DateTime firstDate = DateTime(year.year, 1, 1);
-    DateTime lastDate = DateTime(year.year, 4, 30);
+    DateTime lastDate = DateTime(year.year, 12, 31);
 
     // Make sure initialDate is within the valid range
     DateTime initialDate = slecteddate;
@@ -119,24 +118,21 @@ class TempAttenState extends State<TempAtten> {
                                 IconButton(
                                   icon: const Icon(Icons.close),
                                   onPressed: () async {
-                                    // Get the existing datesheets from Firestore
                                     DocumentSnapshot<Map<String, dynamic>>
                                         documentSnapshot = await firestore
                                             .collection("student")
-                                            .doc(studentId["uid"])
+                                            .doc(studentId["email"])
                                             .collection("atten")
                                             .doc(
                                                 docDateFirebase.year.toString())
                                             .get();
 
                                     if (documentSnapshot.exists) {
-                                      // Remove the selected date from the existing datesheets
                                       Map<String, dynamic> existingDatesheets =
                                           documentSnapshot
                                                   .data()?['datesheets'] ??
                                               {};
 
-                                      // Format the date consistently for removing
                                       String formattedDate =
                                           DateFormat('yyyy-MM-dd')
                                               .format(slecteddate);
@@ -145,17 +141,22 @@ class TempAttenState extends State<TempAtten> {
                                           .containsKey(formattedDate)) {
                                         existingDatesheets
                                             .remove(formattedDate);
-                                        // Write the updated datesheets back to Firestore
+
                                         await firestore
                                             .collection("student")
-                                            .doc(studentId["uid"])
+                                            .doc(studentId["email"])
                                             .collection("atten")
                                             .doc(
                                                 docDateFirebase.year.toString())
                                             .update({
                                           "datesheets": existingDatesheets,
                                         }).then((value) {
-                                          debugPrint("Date removed");
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    "Attendance removed for ${studentData['name']}")),
+                                          );
                                         });
                                       }
                                     }
@@ -167,68 +168,59 @@ class TempAttenState extends State<TempAtten> {
                                 IconButton(
                                   icon: const Icon(Icons.check),
                                   onPressed: () async {
-                                    // Get the existing datesheets from Firestore
                                     DocumentSnapshot<Map<String, dynamic>>
                                         documentSnapshot = await firestore
                                             .collection("student")
-                                            .doc(studentId["uid"])
+                                            .doc(studentId["email"])
                                             .collection("atten")
                                             .doc(
                                                 docDateFirebase.year.toString())
                                             .get();
 
+                                    String formattedDate =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(slecteddate);
                                     Map<String, dynamic> existingDatesheets =
                                         documentSnapshot
                                                 .data()?['datesheets'] ??
-                                            {
-                                              DateFormat('yyyy-MM-dd')
-                                                  .format(slecteddate)
-                                                  .toString(): 5
-                                            };
-                                    if (documentSnapshot.exists) {
-                                      // Update the existing datesheets with the new entry
-                                      if (picked == null) {
-                                        existingDatesheets = {
-                                          ...existingDatesheets,
-                                          DateFormat('yyyy-MM-dd')
-                                              .format(slecteddate)
-                                              .toString(): 5
-                                        };
-                                      } else {
-                                        existingDatesheets = {
-                                          ...existingDatesheets,
-                                          DateFormat('yyyy-MM-dd')
-                                              .format(slecteddate)
-                                              .toString(): 5
-                                        };
-                                      }
+                                            {};
 
-                                      // Write the updated datesheets back to Firestore
+                                    existingDatesheets = {
+                                      ...existingDatesheets,
+                                      formattedDate: 5
+                                    };
+
+                                    if (documentSnapshot.exists) {
                                       await firestore
                                           .collection("student")
-                                          .doc(studentId["uid"])
+                                          .doc(studentId["email"])
                                           .collection("atten")
                                           .doc(docDateFirebase.year.toString())
                                           .update({
                                         "datesheets": existingDatesheets
                                       }).then((value) {
-                                        debugPrint("check");
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  "Attendance marked for ${studentData['name']}")),
+                                        );
                                       });
                                     } else {
-                                      if (kDebugMode) {
-                                        print("Not exists");
-                                      }
                                       await firestore
                                           .collection("student")
-                                          .doc(studentId["uid"])
+                                          .doc(studentId["email"])
                                           .collection("atten")
                                           .doc(docDateFirebase.year.toString())
                                           .set({
                                         "datesheets": existingDatesheets
                                       }).then((value) {
-                                        if (kDebugMode) {
-                                          print("now check");
-                                        }
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  "Attendance created for ${studentData['name']}")),
+                                        );
                                       });
                                     }
                                   },

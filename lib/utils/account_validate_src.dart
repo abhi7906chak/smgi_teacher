@@ -17,7 +17,7 @@ class StudentApprovalScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('student')
-            .where('status', isEqualTo: 'pending')
+            .where('status', isEqualTo: 'pending' )
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
